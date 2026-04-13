@@ -1,0 +1,33 @@
+version: "3.8"
+
+services:
+  app:
+    build: .
+    volumes:
+      - .:/app
+
+  train:
+    build: .
+    volumes:
+      - .:/app
+    env_file:
+      - .env
+    command: >
+      python train.py
+      --timesteps ${TIMESTEPS:-200000}
+      --reward_type ${REWARD_TYPE:-shaped}
+      --save_path ${MODEL_PATH:-models/ppo_model.zip}
+
+  evaluate:
+    build: .
+    volumes:
+      - .:/app
+      - /tmp/.X11-unix:/tmp/.X11-unix
+    environment:
+      - DISPLAY=${DISPLAY}
+    env_file:
+      - .env
+    command: >
+      python evaluate.py
+      --model_path ${MODEL_PATH:-models/ppo_model.zip}
+      --gif_path media/agent_final.gif
