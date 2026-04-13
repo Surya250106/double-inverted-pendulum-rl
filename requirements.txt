@@ -1,0 +1,9 @@
+numpy
+pandas
+matplotlib
+pygame
+pymunk
+torch
+stable-baselines3[extra]
+gymnasium
+imageio
